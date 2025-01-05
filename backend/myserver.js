@@ -7,7 +7,7 @@ const cors = require('cors'); // calling cross origin library
 
 const allowedOrigins = [
   "http://localhost:3000", // Local development
-  "https://rule-based-evalution-frontend.onrender.com", // Hosted frontend
+  "https://weather-application-1-reactapp.onrender.com" // Hosted frontend
 ];
 
 app.use(
