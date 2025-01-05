@@ -36,9 +36,7 @@ mongoose.connect(
 )
   .then(() => console.log("Database Connected..."))
   .catch((error) => console.error("Database connection failed:", error));
-db.on('error', (error) => console.log(error)); // if error than show error
-db.on('open', () => console.log(' Database Connected... ')); // otherwise show Database Connected
-// database connection code end
+
 
 const Weather = require('../backend/api/weatherapi');   
 app.use('/weather', Weather); // http://localhost:5656/rules - post
