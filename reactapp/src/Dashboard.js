@@ -134,7 +134,7 @@ const getWeatherData = async (city) => {
         };
 
         try {
-            const backendUrl = 'http://localhost:5557/weather';
+            const backendUrl = 'https://weather-application-nds7.onrender.com/weather';
             const response = await fetch(backendUrl, {
                 method: 'POST',
                 headers: {

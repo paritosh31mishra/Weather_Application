@@ -87,7 +87,7 @@ const Login = () =>{
     console.log("LOGIN SUCCESS! Current user: ", userDetails);
     localStorage.setItem("userid", userDetails.sub); // Google's user ID
     localStorage.setItem("fullname", userDetails.name);
-    window.location.href = "http://localhost:3000/#/";
+    window.location.href = "https://weather-application-1-reactapp.onrender.com/#/";
     window.location.reload(); // Reload the page after login is successful
     
   }
