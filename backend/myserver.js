@@ -39,6 +39,6 @@ mongoose.connect(
 
 
 const Weather = require('../backend/api/weatherapi');   
-app.use('/weather', Weather); // http://localhost:5656/rules - post
+app.use('/weather', Weather); // http://localhost:5657/weather - post
 
 app.listen(5557, () => console.log('The server is live now....'));
