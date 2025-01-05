@@ -82,7 +82,7 @@ const oAuthKey = "760079447893-amufhf0iqkdqufvfn0r0bega57le5ls2.apps.googleuserc
 
 const Login = () =>{
 
-  const onSuccess = (res) =>{
+  const onSuccess = (credentialResponse) =>{
     const userDetails = JSON.parse(atob(credentialResponse.credential.split('.')[1])); // Decode the token payload
     console.log("LOGIN SUCCESS! Current user: ", userDetails);
     localStorage.setItem("userid", userDetails.sub); // Google's user ID
