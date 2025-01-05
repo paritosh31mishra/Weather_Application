@@ -1,6 +1,7 @@
 
-
 import React, { useState, useEffect } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const WeatherApp = () => {
   const [activeCity, setActiveCity] = useState('Delhi');
@@ -16,70 +17,158 @@ const [maxTemp, setMaxTemp] = useState(null);
   const cities = ['Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Hyderabad', 'Kolkata'];
 
 
+  // const getWeatherData = async (city) => {
+  //     const apiKey = '48ed01bb564f5b6a1bebbc4c43c23e08';
+  //     const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+  //     const temperatureThreshold = 22; // Set your temperature threshold in Celsius
+  
+  //     try {
+  //         const response = await fetch(url);
+  //         if (!response.ok) {
+  //             throw new Error('Failed to fetch weather data');
+  //         }
+  //         const data = await response.json();
+  
+  //         // Extract temperature in Celsius (from Kelvin)
+  //         const temperature = data.main.temp - 273.15;
+          
+  //         // Check if the temperature exceeds the threshold
+          
+  //         if (temperature > temperatureThreshold) {
+  //           console.log(`Temperature is high: ${temperature.toFixed(1)}°C. It's hotter than previous!`);
+  //         }
+  
+         
+  //         setWeatherData(data);
+  //         setError(null);
+  //         setLastUpdated(new Date().toLocaleTimeString());
+  
+  //         const now = new Date();
+  //         const day = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+  //         const hourlyTime = now.toISOString(); // Full ISO string for date-time
+  
+  //         const payload = {
+  //             city,             // City name
+  //             temperature,      // Temperature in Celsius
+  //             day,              // Day for the weather data
+  //             hourlyTime        // Date-time for the weather data
+  //         };
+  
+  //         try {
+  //             const backendUrl = 'http://localhost:5557/weather';
+  //             const response = await fetch(backendUrl, {
+  //                 method: 'POST',
+  //                 headers: {
+  //                     'Content-Type': 'application/json',
+  //                 },
+  //                 body: JSON.stringify(payload), // Sending the structured payload to the backend
+  //             });
+  
+  //             if (!response.ok) {
+  //                 throw new Error('Failed to post weather data to backend');
+  //             }
+  
+  //             const backendData = await response.json(); // Get the response from the backend
+  
+  //             // Extract the avgTemperature, minTemperature, maxTemperature from the backend response
+  //             const { avgTemperature, minTemperature, maxTemperature } = backendData;
+  
+  //             // Store these in the state to render them in the UI
+  //             setAvgTemp(avgTemperature);
+  //             setMinTemp(minTemperature);
+  //             setMaxTemp(maxTemperature);
+  
+  //             console.log('Weather data successfully posted to backend');
+  //         } catch (err) {
+  //             console.error('Error posting weather data to backend:', err);
+  //         }
+  
+  //     } catch (err) {
+  //         setError(err.message);
+  //         setWeatherData(null);
+  //     }
+  // };
+
+
 
 const getWeatherData = async (city) => {
-  const apiKey = '48ed01bb564f5b6a1bebbc4c43c23e08';
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    const apiKey = '48ed01bb564f5b6a1bebbc4c43c23e08';
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+    const temperatureThreshold = 20; // Set your temperature threshold in Celsius
 
-  try {
-      const response = await fetch(url);
-      if (!response.ok) {
-          throw new Error('Failed to fetch weather data');
-      }
-      const data = await response.json();
+    // Initialize toast notifications
+    
 
-      // Extract temperature in Celsius (from Kelvin)
-      const temperature = data.main.temp - 273.15;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Failed to fetch weather data');
+        }
+        const data = await response.json();
 
-      setWeatherData(data);
-      setError(null);
-      setLastUpdated(new Date().toLocaleTimeString());
+        // Extract temperature in Celsius (from Kelvin)
+        const temperature = data.main.temp - 273.15;
+        
+        // Check if the temperature exceeds the threshold
+        if (temperature > temperatureThreshold) {
+          console.log(`Temperature is high: ${temperature.toFixed(1)}°C. It's hotter than previous!`);
+            toast.warn(`Temperature is high: ${temperature.toFixed(1)}°C. It's hotter than previous!`, {
+                position: "top-right",
+            });
+        }
 
-      const now = new Date();
-      const day = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-      const hourlyTime = now.toISOString(); // Full ISO string for date-time
+      
+        setWeatherData(data);
+        setError(null);
+        setLastUpdated(new Date().toLocaleTimeString());
 
-      const payload = {
-          city,             // City name
-          temperature,      // Temperature in Celsius
-          day,              // Day for the weather data
-          hourlyTime        // Date-time for the weather data
-      };
+        const now = new Date();
+        const day = now.toISOString().split('T')[0]; // Format as YYYY-MM-DD
+        const hourlyTime = now.toISOString(); // Full ISO string for date-time
 
-      try {
-          const backendUrl = 'http://localhost:5557/weather';
-          const response = await fetch(backendUrl, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(payload), // Sending the structured payload to the backend
-          });
+        const payload = {
+            city,             // City name
+            temperature,      // Temperature in Celsius
+            day,              // Day for the weather data
+            hourlyTime        // Date-time for the weather data
+        };
 
-          if (!response.ok) {
-              throw new Error('Failed to post weather data to backend');
-          }
+        try {
+            const backendUrl = 'http://localhost:5557/weather';
+            const response = await fetch(backendUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload), // Sending the structured payload to the backend
+            });
 
-          const backendData = await response.json(); // Get the response from the backend
+            if (!response.ok) {
+                throw new Error('Failed to post weather data to backend');
+            }
 
-          // Extract the avgTemperature, minTemperature, maxTemperature from the backend response
-          const { avgTemperature, minTemperature, maxTemperature } = backendData;
+            const backendData = await response.json(); // Get the response from the backend
 
-          // Store these in the state to render them in the UI
-          setAvgTemp(avgTemperature);
-          setMinTemp(minTemperature);
-          setMaxTemp(maxTemperature);
+            // Extract the avgTemperature, minTemperature, maxTemperature from the backend response
+            const { avgTemperature, minTemperature, maxTemperature } = backendData;
 
-          console.log('Weather data successfully posted to backend');
-      } catch (err) {
-          console.error('Error posting weather data to backend:', err);
-      }
+            // Store these in the state to render them in the UI
+            setAvgTemp(avgTemperature);
+            setMinTemp(minTemperature);
+            setMaxTemp(maxTemperature);
 
-  } catch (err) {
-      setError(err.message);
-      setWeatherData(null);
-  }
+            console.log('Weather data successfully posted to backend');
+        } catch (err) {
+            console.error('Error posting weather data to backend:', err);
+        }
+
+    } catch (err) {
+        setError(err.message);
+        setWeatherData(null);
+    }
 };
+
+  
 
 
   useEffect(() => {
@@ -112,6 +201,7 @@ const getWeatherData = async (city) => {
 
   return (
     <section>
+       <ToastContainer />
       <div className='container'>
         <div className='row mt-5'>
           <div className='col-lg-12 text-center fs-1 fw-bold text-dark'>
